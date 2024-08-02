@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <string.h>
+typedef enum {
+    q0, 
+    q1, 
+    q2, 
+    q3  
+} State;
+State getNextState(State currentState, char input) {
+    switch (currentState) {
+        case q0:
+            if (input == 'a') return q1;
+            else return q3;
+        case q1:
+            if (input == 'a') return q1;
+            else if (input == 'b') return q2;
+            else return q3;
+        case q2:
+            if (input == 'b') return q2;
+            else return q3;
+        default:
+            return q3;
+    }
+}
+int isAcceptedByDFA(const char* input) {
+    State currentState = q0;
+    int length = strlen(input);
+
+    for (int i = 0; i < length; i++) {
+        currentState = getNextState(currentState, input[i]);
+    }
+    return currentState == q2;
+}
+
+int main() {
+    char input[100];
+    printf("Enter a string: ");
+    scanf("%s", input);
+
+    if (isAcceptedByDFA(input)) {
+        printf("The string '%s' is accepted by the DFA.\n", input);
+    } else {
+        printf("The string '%s' is not accepted by the DFA.\n", input);
+    }
+
+    return 0;
+}
